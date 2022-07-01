@@ -18,17 +18,13 @@ tasks:
   publish:init:
     - git init .publish-pages
     - cd .publish-pages && git checkout --orphan pages
-
-  publish:copy:
-    - cp -r stream.html dist .publish-pages
+    - cd .publish-pages && git remote add origin ..
 
   publish:
-    - task: publish:copy
+    - cp -r stream.html dist .publish-pages
     - cd .publish-pages && git add *
     - cd .publish-pages && git commit -m "publish"
-
-  publish:setremote:
-    - cd .publish-pages && git remote add origin ..    
-
-  publish:push:
     - cd .publish-pages && git push origin pages
+
+  publish:clean:
+    - rm -rf .publish-pages
