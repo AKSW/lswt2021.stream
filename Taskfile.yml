@@ -1,0 +1,34 @@
+version: '3'
+
+tasks:
+
+  default:
+    - task: install
+    - task: webpack
+
+  install:
+    - npm install
+
+  webpack:
+    - npx webpack
+
+  publish:clone:
+    - git clone --depth=1 --single-branch --branch pages . .publish-pages
+
+  publish:init:
+    - git init .publish-pages
+    - cd .publish-pages && git checkout --orphan pages
+
+  publish:copy:
+    - cp -r stream.html dist .publish-pages
+
+  publish:
+    - task: publish:copy
+    - cd .publish-pages && git add *
+    - cd .publish-pages && git commit -m "publish"
+
+  publish:setremote:
+    - cd .publish-pages && git remote add origin ..    
+
+  publish:push:
+    - cd .publish-pages && git push origin pages
