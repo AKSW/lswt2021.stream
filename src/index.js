@@ -1,11 +1,12 @@
-//const socket = io("wss://chat.lswt2021.comiles.eu");
-// const ws = new WebSocket('wss://chat.lswt2021.comiles.eu/ws');
-const ws = new WebSocket('ws://localhost:5000/ws');
+import { io } from "socket.io-client";
 
-ws.addEventListener('message', function (event) {
+// const socket = io("wss://chat.lswt2021.comiles.eu/ws");
+const socket = io("ws://localhost:5000/ws");
+// const ws = new WebSocket('wss://chat.lswt2021.comiles.eu/ws');
+// const ws = new WebSocket('ws://localhost:5000/ws');
+
+socket.on('server_message', (data) => {
   console.log("message received");
-  console.log(event);
-  data = JSON.parse(event.data)
   console.log(data);
   let e = document.createElement('p');
   let sp_nick = document.createElement('span');
@@ -14,7 +15,7 @@ ws.addEventListener('message', function (event) {
   sp_nick.innerHTML = data.nickname;
   sp_time.innerHTML = data.time;
   sp_time.setAttribute("class", "date");
-  sp_message.innerHTML = data.message;
+  sp_message.innerHTML = data.body;
   e.append(sp_time);
   e.append(" ");
   e.append(sp_nick);
@@ -45,11 +46,11 @@ function sendMessage() {
     };
     console.log(message);
     if (message) {
-      ws.send(JSON.stringify(message));
+      socket.emit('client_message', message);
     }
     document.getElementById('message-input').value = '';
-    return false;
   }
+  return false;
 }
 
 
