@@ -9,11 +9,16 @@ let room_id = window.location.hash.substring(1)
 
 socket.on('connect', () => {
   console.log(`connect ${socket.id}`);
+  const message_box = document.getElementById('info_box');
+  message_box.innerHTML = '';
   zapp(room_id);
 });
 
 socket.on('disconnect', () => {
   console.log(`disconnect ${socket.id}`);
+
+  const message_box = document.getElementById('info_box');
+  message_box.innerHTML = 'The Chat is diconnected, trying to reconnect';
 });
 
 socket.on('server_message', (message) => {
