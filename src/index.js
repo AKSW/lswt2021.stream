@@ -5,10 +5,11 @@ const socket = io("ws://localhost:8000", {someVar: "bla"});
 // const ws = new WebSocket('wss://chat.lswt2021.comiles.eu/ws');
 // const ws = new WebSocket('ws://localhost:5000/ws');
 
+let room_id = window.location.hash.substring(1)
+
 socket.on('connect', () => {
   console.log(`connect ${socket.id}`);
-  var stream_id = window.location.hash.substring(1);
-  zapp(stream_id);
+  zapp(room_id);
 });
 
 socket.on('disconnect', () => {
@@ -70,8 +71,11 @@ socket.on('streams_update', (streamList) => {
 
 function zapp(stream_id) {
   // clear messages
+  console.log("zapp to: " + stream_id);
   const message_box = document.getElementById('message-box');
   message_box.innerHTML = '';
+  room_id = stream_id;
+  window.location.hash = "#" + room_id;
   socket.emit('client_zapp', stream_id);
 }
 
@@ -96,7 +100,7 @@ function sendMessage() {
     };
     console.log(message);
     if (message) {
-      socket.emit('client_message', message);
+      socket.emit('client_message', message, room_id);
     }
     document.getElementById('message-input').value = '';
   }
