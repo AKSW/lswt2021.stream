@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
 
 // const socket = io("wss://chat.lswt2021.comiles.eu/ws");
-const socket = io("ws://localhost:8000", {someVar: "bla"});
+const socket = io("ws://localhost:3000");
 // const ws = new WebSocket('wss://chat.lswt2021.comiles.eu/ws');
 // const ws = new WebSocket('ws://localhost:5000/ws');
 
